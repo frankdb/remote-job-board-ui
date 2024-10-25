@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,42 +17,45 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex-shrink-0 flex items-center">
-            <div className="flex flex-row text-2xl justify-center items-center space-x-1">
+            <Link
+              href="/"
+              className="flex flex-row text-2xl justify-center items-center space-x-1"
+            >
               <MdOutlineHandshake />
               <span className="text-2xl font-bold">Hirepod</span>
-            </div>
+            </Link>
           </div>
           <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-            <a
+            <Link
               href="/"
               className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
             >
               Home
-            </a>
-            <a
+            </Link>
+            <Link
               href="/register"
               className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
             >
               Register
-            </a>
-            <a
+            </Link>
+            <Link
               href="/login"
               className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
             >
               Login
-            </a>
-            <a
+            </Link>
+            <Link
               href="/jobs"
               className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
             >
               Job Search
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              href="/about"
               className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
             >
               About
-            </a>
+            </Link>
           </div>
           <div className="sm:hidden flex items-center">
             <DropdownMenu>
@@ -64,10 +68,31 @@ const Navbar = () => {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Navigation</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Home</DropdownMenuItem>
-                <DropdownMenuItem>About</DropdownMenuItem>
-                <DropdownMenuItem>Services</DropdownMenuItem>
-                <DropdownMenuItem>Contact</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href="/" className="w-full">
+                    Home
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href="/register" className="w-full">
+                    Register
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href="/login" className="w-full">
+                    Login
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href="/jobs" className="w-full">
+                    Job Search
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href="/about" className="w-full">
+                    About
+                  </Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
