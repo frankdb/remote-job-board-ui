@@ -15,7 +15,7 @@ import { MdOutlineHandshake } from "react-icons/md";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
 
   return (
     <nav className="bg-primary text-primary-foreground w-full">
@@ -30,26 +30,26 @@ const Navbar = () => {
               <span className="text-2xl font-bold">Hirepod</span>
             </Link>
           </div>
-          <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+          <div className="hidden sm:ml-6 sm:flex sm:space-x-8 sm:justify-center sm:items-center">
             <Link
               href="/"
-              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
+              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
             >
               Home
+            </Link>
+            <Link
+              href="/jobs"
+              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
+            >
+              Jobs
             </Link>
             {isAuthenticated ? (
               <>
                 <Link
                   href="/dashboard"
-                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
+                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
                 >
                   Dashboard
-                </Link>
-                <Link
-                  href="/jobs"
-                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
-                >
-                  Job Search
                 </Link>
                 <Button onClick={logout} variant="ghost">
                   Logout
@@ -59,24 +59,18 @@ const Navbar = () => {
               <>
                 <Link
                   href="/register"
-                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
+                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
                 >
                   Register
                 </Link>
                 <Link
                   href="/login"
-                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
+                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
                 >
                   Login
                 </Link>
               </>
             )}
-            <Link
-              href="/about"
-              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
-            >
-              About
-            </Link>
           </div>
           <div className="sm:hidden flex items-center">
             <DropdownMenu>
@@ -92,6 +86,11 @@ const Navbar = () => {
                 <DropdownMenuItem>
                   <Link href="/" className="w-full">
                     Home
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href="/jobs" className="w-full">
+                    Jobs
                   </Link>
                 </DropdownMenuItem>
                 {isAuthenticated ? (
