@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,8 +12,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Menu } from "lucide-react";
 import { MdOutlineHandshake } from "react-icons/md";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
+  const { isAuthenticated, user, logout } = useAuth();
+
   return (
     <nav className="bg-primary text-primary-foreground w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,24 +37,40 @@ const Navbar = () => {
             >
               Home
             </Link>
-            <Link
-              href="/register"
-              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
-            >
-              Register
-            </Link>
-            <Link
-              href="/login"
-              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
-            >
-              Login
-            </Link>
-            <Link
-              href="/jobs"
-              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
-            >
-              Job Search
-            </Link>
+            {isAuthenticated ? (
+              <>
+                <Link
+                  href="/dashboard"
+                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/jobs"
+                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
+                >
+                  Job Search
+                </Link>
+                <Button onClick={logout} variant="ghost">
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/register"
+                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
+                >
+                  Register
+                </Link>
+                <Link
+                  href="/login"
+                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
+                >
+                  Login
+                </Link>
+              </>
+            )}
             <Link
               href="/about"
               className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium hover:border-secondary"
@@ -73,21 +94,34 @@ const Navbar = () => {
                     Home
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/register" className="w-full">
-                    Register
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/login" className="w-full">
-                    Login
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/jobs" className="w-full">
-                    Job Search
-                  </Link>
-                </DropdownMenuItem>
+                {isAuthenticated ? (
+                  <>
+                    <DropdownMenuItem>
+                      <Link href="/dashboard" className="w-full">
+                        Dashboard
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href="/jobs" className="w-full">
+                        Job Search
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem>
+                      <Link href="/register" className="w-full">
+                        Register
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href="/login" className="w-full">
+                        Login
+                      </Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
                 <DropdownMenuItem>
                   <Link href="/about" className="w-full">
                     About

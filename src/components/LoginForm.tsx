@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +19,9 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import AuthHeader from "./AuthHeader";
+import { useAuth } from "@/contexts/AuthContext";
+import { login } from "@/services/api";
+import { toast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -27,6 +33,10 @@ const formSchema = z.object({
 });
 
 export function LoginForm() {
+  const { login: authLogin } = useAuth();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,8 +45,43 @@ export function LoginForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    try {
+      const { email, access_token, refresh_token } = await login(
+        values.email,
+        values.password
+      );
+      authLogin(access_token, refresh_token, { email });
+      toast({
+        title: "Login successful",
+        description: "You have been logged in successfully.",
+      });
+      router.push("/dashboard");
+    } catch (error: any) {
+      console.error(error);
+      let errorMessage = "An unexpected error occurred during login.";
+      if (error.response) {
+        if (error.response.status === 400) {
+          errorMessage =
+            "Invalid credentials. Please check your email and password.";
+        } else if (error.response.status === 401) {
+          errorMessage = "Unauthorized. Please check your credentials.";
+        } else if (error.response.status === 500) {
+          errorMessage = "Server error. Please try again later.";
+        }
+      } else if (error.request) {
+        errorMessage =
+          "No response from server. Please check your internet connection.";
+      }
+      toast({
+        title: "Login failed",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -86,8 +131,8 @@ export function LoginForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
-              Log In
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Logging in..." : "Log In"}
             </Button>
           </form>
         </Form>

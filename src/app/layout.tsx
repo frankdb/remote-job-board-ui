@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
 import "./globals.css";
+import { AuthProviderWrapper } from "@/components/AuthProviderWrapper";
+import { Toaster } from "@/components/ui/toaster";
 
 const font = Figtree({ subsets: ["latin"] });
 
@@ -16,7 +18,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={font.className}>{children}</body>
+      <body className={font.className}>
+        <AuthProviderWrapper>
+          {children}
+          <Toaster />
+        </AuthProviderWrapper>
+      </body>
     </html>
   );
 }
