@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import AuthHeader from "./auth/AuthHeader";
+import AuthHeader from "@/components/auth/AuthHeader";
 import { register } from "@/services/api";
 import { toast } from "@/hooks/use-toast";
 
