@@ -2,38 +2,29 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import PostedJobsTable from "@/components/dashboard/PostedJobsTable";
-
-interface Job {
-  id: number;
-  title: string;
-  datePosted: string;
-  status: string;
-}
+import { Job } from "@/types/job";
+import api from "@/services/api";
 
 const EmployerDashboard = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch posted jobs data
-    // For now, we'll use mock data
-    const mockJobs = [
-      {
-        id: 1,
-        title: "Senior Frontend Developer",
-        datePosted: "2024-03-01",
-        status: "Active",
-      },
-      {
-        id: 2,
-        title: "UX/UI Designer",
-        datePosted: "2024-02-28",
-        status: "Closed",
-      },
-    ];
+    const fetchJobs = async () => {
+      try {
+        const response = await api.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/jobs/employer/`
+        );
+        const jobsWithStatus = response.data.results;
+        setJobs(jobsWithStatus);
+      } catch (error) {
+        console.error("Error fetching jobs:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    setJobs(mockJobs);
-    setIsLoading(false);
+    fetchJobs();
   }, []);
 
   return (

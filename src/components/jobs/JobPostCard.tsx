@@ -7,8 +7,8 @@ import {
   BriefcaseIcon,
   Banknote,
 } from "lucide-react";
-import { formatEmploymentType, formatPostedDate } from "@/utils/date";
-
+import { formatPostedDate } from "@/utils/date";
+import { formatEmploymentType } from "@/utils/misc";
 interface JobPost {
   id: number;
   title: string;

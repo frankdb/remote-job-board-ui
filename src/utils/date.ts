@@ -33,15 +33,11 @@ export const formatPostedDate = (posted_date: string) => {
   return "Posted just now";
 };
 
-export const formatEmploymentType = (employment_type: string) => {
-  switch (employment_type) {
-    case "FT":
-      return "Full-time";
-    case "PT":
-      return "Part-time";
-    case "CT":
-      return "Contract";
-    case "IN":
-      return "Internship";
-  }
+export const formatDate = (date: string) => {
+  const dateObj = new Date(date);
+  return dateObj.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
 };

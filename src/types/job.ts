@@ -13,6 +13,7 @@ export interface Job {
   posted_date: string;
   applicationDeadline: string;
   employment_type: string;
+  status: string;
   logo_url?: string;
 }
 
