@@ -1,17 +1,13 @@
-import ProtectedRoute from "@/components/ProtectedRoute";
-import Navbar from "@/components/Navbar";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import DashboardContent from "@/components/dashboard/DashboardContent";
+import Navbar from "@/components/shared/Navbar";
 
 const DashboardPage = () => {
   return (
     <ProtectedRoute>
       <Navbar />
       <div className="container mx-auto mt-8 p-4">
-        <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-        <p>
-          Welcome to your dashboard. This page is only visible to authenticated
-          users.
-        </p>
-        {/* Add more dashboard content here */}
+        <DashboardContent />
       </div>
     </ProtectedRoute>
   );

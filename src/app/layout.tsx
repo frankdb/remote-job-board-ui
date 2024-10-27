@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
 import "./globals.css";
-import { AuthProviderWrapper } from "@/components/AuthProviderWrapper";
+import { AuthProviderWrapper } from "@/components/auth/AuthProviderWrapper";
 import { Toaster } from "@/components/ui/toaster";
 
 const font = Figtree({ subsets: ["latin"] });

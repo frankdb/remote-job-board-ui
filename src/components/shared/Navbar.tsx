@@ -75,14 +75,16 @@ const Navbar = () => {
           <div className="sm:hidden flex items-center">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-primary-foreground hover:bg-primary-foreground/10"
+                >
                   <Menu className="h-[1.2rem] w-[1.2rem]" />
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Navigation</DropdownMenuLabel>
-                <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <Link href="/" className="w-full">
                     Home
@@ -98,11 +100,6 @@ const Navbar = () => {
                     <DropdownMenuItem>
                       <Link href="/dashboard" className="w-full">
                         Dashboard
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link href="/jobs" className="w-full">
-                        Job Search
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
@@ -121,11 +118,6 @@ const Navbar = () => {
                     </DropdownMenuItem>
                   </>
                 )}
-                <DropdownMenuItem>
-                  <Link href="/about" className="w-full">
-                    About
-                  </Link>
-                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

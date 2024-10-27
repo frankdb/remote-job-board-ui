@@ -1,5 +1,5 @@
-import Navbar from "@/components/Navbar";
-import { RegisterForm } from "@/components/RegisterForm";
+import Navbar from "@/components/shared/Navbar";
+import { RegisterForm } from "@/components/auth/RegisterForm";
 
 export default function RegisterPage() {
   return (

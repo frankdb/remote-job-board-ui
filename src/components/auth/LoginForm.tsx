@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import AuthHeader from "./AuthHeader";
+import AuthHeader from "@/components/auth/AuthHeader";
 import { useAuth } from "@/contexts/AuthContext";
 import { login } from "@/services/api";
 import { toast } from "@/hooks/use-toast";
@@ -48,11 +48,11 @@ export function LoginForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     try {
-      const { email, access_token, refresh_token } = await login(
+      const { access_token, refresh_token, user } = await login(
         values.email,
         values.password
       );
-      authLogin(access_token, refresh_token, { email });
+      authLogin(access_token, refresh_token, user);
       toast({
         title: "Login successful",
         description: "You have been logged in successfully.",

@@ -5,10 +5,15 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 import { refreshToken } from "@/services/api";
 import api from "@/services/api";
 
+interface User {
+  email: string;
+  user_type: string;
+}
+
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: any | null;
-  login: (access_token: string, refresh_token: string, user: any) => void;
+  user: User | null;
+  login: (access_token: string, refresh_token: string, user: User) => void;
   logout: () => void;
   refreshAccessToken: () => Promise<string | null>;
 }
@@ -19,7 +24,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [, setAccessToken] = useState<string | null>(null);
   const [refreshTokenValue, setRefreshTokenValue] = useState<string | null>(
     null
@@ -37,7 +42,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
-  const login = (access_token: string, refresh_token: string, user: any) => {
+  const login = (access_token: string, refresh_token: string, user: User) => {
     localStorage.setItem("access_token", access_token);
     localStorage.setItem("refresh_token", refresh_token);
     localStorage.setItem("user", JSON.stringify(user));

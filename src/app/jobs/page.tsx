@@ -1,5 +1,5 @@
-import JobList from "@/components/JobList";
-import Navbar from "@/components/Navbar";
+import JobList from "@/components/jobs/JobList";
+import Navbar from "@/components/shared/Navbar";
 
 export default function JobsPage() {
   return (
