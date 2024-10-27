@@ -20,7 +20,8 @@ export default async function JobDetailPage({
 }: {
   params: { slug: string };
 }) {
-  const job = await getJobBySlug(params.slug);
+  const resolvedParams = await params;
+  const job = await getJobBySlug(resolvedParams.slug);
 
   if (!job) {
     notFound();

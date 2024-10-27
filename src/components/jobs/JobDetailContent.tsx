@@ -54,7 +54,7 @@ const JobDetailContent: React.FC<JobDetailContentProps> = ({ job }) => {
                   {job.title}
                 </CardTitle>
                 <p className="text-xl text-muted-foreground mb-4">
-                  {job.company}
+                  {job.company_name}
                 </p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   <Badge

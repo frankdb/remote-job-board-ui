@@ -13,23 +13,7 @@ import {
   PaginationPrevious,
   PaginationEllipsis,
 } from "../ui/pagination";
-
-interface JobPost {
-  id: number;
-  title: string;
-  company_name: string;
-  location: string;
-  salary: string;
-  type: string;
-  description: string;
-}
-
-interface PaginatedResponse {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: JobPost[];
-}
+import { Job, PaginatedResponse } from "@/types/job";
 
 interface JobListProps {
   initialJobs: PaginatedResponse;
@@ -38,7 +22,7 @@ interface JobListProps {
 const JobList: React.FC<JobListProps> = ({ initialJobs }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [jobPosts, setJobPosts] = useState<JobPost[]>(initialJobs.results);
+  const [jobPosts, setJobPosts] = useState<Job[]>(initialJobs.results);
   const [totalPages, setTotalPages] = useState(
     Math.ceil(initialJobs.count / 10)
   );
@@ -135,7 +119,9 @@ const JobList: React.FC<JobListProps> = ({ initialJobs }) => {
                 <PaginationEllipsis />
               ) : (
                 <PaginationLink
-                  onClick={() => paginate(item)}
+                  onClick={() =>
+                    typeof item === "number" ? paginate(item) : undefined
+                  }
                   isActive={currentPage === item}
                 >
                   {item}
