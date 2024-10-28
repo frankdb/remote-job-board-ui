@@ -42,17 +42,19 @@ async function getJobs(searchParams: {
   }
 }
 
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
 export default async function JobsPage({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams: SearchParams;
 }) {
-  // Ensure searchParams is an object and await it
-  const params = await Promise.resolve(searchParams ?? {});
+  // Await the searchParams Promise
+  const resolvedParams = await searchParams;
 
   // Convert undefined values to empty strings and arrays to comma-separated strings
   const sanitizedParams = Object.fromEntries(
-    Object.entries(params).map(([key, value]) => [
+    Object.entries(resolvedParams ?? {}).map(([key, value]) => [
       key,
       Array.isArray(value) ? value.join(",") : value ?? "",
     ])
