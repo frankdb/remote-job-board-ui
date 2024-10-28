@@ -16,6 +16,7 @@ interface AuthContextType {
   login: (access_token: string, refresh_token: string, user: User) => void;
   logout: () => void;
   refreshAccessToken: () => Promise<string | null>;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -29,17 +30,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [refreshTokenValue, setRefreshTokenValue] = useState<string | null>(
     null
   );
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const storedAccessToken = localStorage.getItem("access_token");
-    const storedRefreshToken = localStorage.getItem("refresh_token");
-    const storedUser = localStorage.getItem("user");
-    if (storedAccessToken && storedRefreshToken && storedUser) {
-      setAccessToken(storedAccessToken);
-      setRefreshTokenValue(storedRefreshToken);
-      setIsAuthenticated(true);
-      setUser(JSON.parse(storedUser));
-    }
+    const initializeAuth = () => {
+      const storedAccessToken = localStorage.getItem("access_token");
+      const storedRefreshToken = localStorage.getItem("refresh_token");
+      const storedUser = localStorage.getItem("user");
+
+      if (storedAccessToken && storedRefreshToken && storedUser) {
+        setAccessToken(storedAccessToken);
+        setRefreshTokenValue(storedRefreshToken);
+        setIsAuthenticated(true);
+        setUser(JSON.parse(storedUser));
+      }
+      setIsLoading(false);
+    };
+
+    initializeAuth();
   }, []);
 
   const login = (access_token: string, refresh_token: string, user: User) => {
@@ -93,6 +101,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         login,
         logout,
         refreshAccessToken,
+        isLoading,
       }}
     >
       {children}
