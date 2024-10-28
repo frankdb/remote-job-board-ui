@@ -8,12 +8,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu } from "lucide-react";
-import { MdOutlineHandshake } from "react-icons/md";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { MdOutlineHandshake, MdMenu } from "react-icons/md";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
+
+  const getInitials = (name: string = "U") => {
+    return name.charAt(0).toUpperCase();
+  };
 
   return (
     <nav className="bg-primary text-primary-foreground w-full">
@@ -28,66 +32,50 @@ const Navbar = () => {
               <span className="text-2xl font-bold">Hirepod</span>
             </Link>
           </div>
-          <div className="hidden sm:ml-6 sm:flex sm:space-x-8 sm:justify-center sm:items-center">
-            <Link
-              href="/"
-              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
-            >
-              Home
-            </Link>
-            <Link
-              href="/jobs"
-              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
-            >
-              Jobs
-            </Link>
-            {isAuthenticated ? (
-              <>
-                <Link
-                  href="/dashboard"
-                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
-                >
-                  Dashboard
-                </Link>
-                <Button onClick={logout} variant="ghost">
-                  Logout
-                </Button>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/register"
-                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
-                >
-                  Register
-                </Link>
-                <Link
-                  href="/login"
-                  className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
-                >
-                  Login
-                </Link>
-              </>
-            )}
-          </div>
-          <div className="sm:hidden flex items-center">
+
+          <div className="flex items-center space-x-4">
+            {/* Hide these links on mobile, show on md (768px) and up */}
+            <div className="hidden md:flex items-center space-x-4">
+              <Link href="/jobs" className="text-sm font-medium">
+                Jobs
+              </Link>
+              {isAuthenticated ? (
+                <>
+                  <Link href="/dashboard" className="text-sm font-medium">
+                    Dashboard
+                  </Link>
+                  <Link href="/account" className="text-sm font-medium">
+                    My Account
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link href="/register" className="text-sm font-medium">
+                    Register
+                  </Link>
+                  <Link href="/login" className="text-sm font-medium">
+                    Login
+                  </Link>
+                </>
+              )}
+            </div>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-primary-foreground hover:bg-primary-foreground/10"
-                >
-                  <Menu className="h-[1.2rem] w-[1.2rem]" />
-                  <span className="sr-only">Toggle menu</span>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  {isAuthenticated ? (
+                    <Avatar>
+                      <AvatarFallback className="bg-secondary text-secondary-foreground">
+                        {getInitials(user?.email.charAt(0))}
+                      </AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    <MdMenu className="h-5 w-5" />
+                  )}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                  <Link href="/" className="w-full">
-                    Home
-                  </Link>
-                </DropdownMenuItem>
+                <DropdownMenuItem></DropdownMenuItem>
                 <DropdownMenuItem>
                   <Link href="/jobs" className="w-full">
                     Jobs
@@ -100,7 +88,17 @@ const Navbar = () => {
                         Dashboard
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href="/account" className="w-full">
+                        My Account
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className="cursor-pointer"
+                      onClick={logout}
+                    >
+                      Logout
+                    </DropdownMenuItem>
                   </>
                 ) : (
                   <>
