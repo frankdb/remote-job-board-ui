@@ -17,9 +17,26 @@ export interface Job {
   logo_url?: string;
 }
 
-export interface PaginatedResponse {
+export interface JobsResponse {
   count: number;
   next: string | null;
   previous: string | null;
   results: Job[];
+}
+
+export interface FilterParams {
+  employment_type: string;
+}
+
+export type EmploymentType = "FT" | "PT" | "CT" | "IN";
+
+export interface JobFormData {
+  title: string;
+  company_name: string;
+  location: string;
+  salary: string;
+  employment_type: EmploymentType;
+  description: string;
+  requirements: string;
+  benefits?: string[];
 }

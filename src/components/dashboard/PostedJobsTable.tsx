@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Card } from "@/components/ui/card";
 import { formatDate } from "@/utils/date";
 import { formatEmploymentType } from "@/utils/misc";
 import { Job } from "@/types/job";
@@ -33,34 +34,36 @@ export const formatJobStatus = (status: string): ReactElement | null => {
 
 const PostedJobsTable = ({ jobs, isLoading }: PostedJobsTableProps) => {
   if (isLoading) {
-    return <div>Loading posted jobs...</div>;
+    return <Card className="p-6">Loading posted jobs...</Card>;
   }
 
   if (jobs.length === 0) {
-    return <div>You haven&apos;t posted any jobs yet.</div>;
+    return <Card className="p-6">You haven&apos;t posted any jobs yet.</Card>;
   }
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Job Title</TableHead>
-          <TableHead>Posted Date</TableHead>
-          <TableHead>Employment Type</TableHead>
-          <TableHead>Status</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {jobs.map((job) => (
-          <TableRow key={job.id}>
-            <TableCell>{job.title}</TableCell>
-            <TableCell>{formatDate(job.posted_date)}</TableCell>
-            <TableCell>{formatEmploymentType(job.employment_type)}</TableCell>
-            <TableCell>{formatJobStatus(job.status)}</TableCell>
+    <Card className="p-4">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Job Title</TableHead>
+            <TableHead>Posted Date</TableHead>
+            <TableHead>Employment Type</TableHead>
+            <TableHead>Status</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {jobs.map((job) => (
+            <TableRow key={job.id}>
+              <TableCell>{job.title}</TableCell>
+              <TableCell>{formatDate(job.posted_date)}</TableCell>
+              <TableCell>{formatEmploymentType(job.employment_type)}</TableCell>
+              <TableCell>{formatJobStatus(job.status)}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Card>
   );
 };
 
