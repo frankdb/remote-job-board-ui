@@ -3,6 +3,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { Loading } from "@/components/shared/Loading";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -19,7 +20,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }, [isAuthenticated, isLoading, router]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Or your loading component
+    return <Loading size="lg" />;
   }
 
   if (!isAuthenticated) {
