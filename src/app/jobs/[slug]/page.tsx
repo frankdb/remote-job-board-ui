@@ -18,7 +18,7 @@ async function getJobBySlug(slug: string) {
 export default async function JobDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   const resolvedParams = await params;
   const job = await getJobBySlug(resolvedParams.slug);
