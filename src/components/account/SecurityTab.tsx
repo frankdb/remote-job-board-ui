@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -16,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
+import api from "@/services/api";
 
 const passwordSchema = z
   .object({
@@ -45,18 +47,42 @@ export default function SecurityTab() {
   const onSubmit = async (values: z.infer<typeof passwordSchema>) => {
     setIsLoading(true);
     try {
-      // Add API call to update password here
-      console.log(values);
+      await api.post("/api/password/change/", {
+        old_password: values.currentPassword,
+        new_password: values.newPassword,
+      });
+
       toast({
         title: "Success",
         description: "Your password has been updated.",
       });
       form.reset();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+
+      // Handle Django REST Framework error responses
+      let errorMessage = "Failed to update password.";
+
+      if (error.response?.data) {
+        // Handle string error messages
+        if (typeof error.response.data === "string") {
+          errorMessage = error.response.data;
+        }
+        // Handle object error messages
+        else if (typeof error.response.data === "object") {
+          // Get the first error message from any field
+          const firstError = Object.values(error.response.data)[0];
+          if (Array.isArray(firstError)) {
+            errorMessage = firstError[0];
+          } else if (typeof firstError === "string") {
+            errorMessage = firstError;
+          }
+        }
+      }
+
       toast({
         title: "Error",
-        description: "Failed to update password.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
