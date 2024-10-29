@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import PostedJobsTable from "@/components/dashboard/PostedJobsTable";
 import { Job } from "@/types/job";
 import api from "@/services/api";
+import JobListingTableCard from "@/components/dashboard/JobListingTableCard";
 
 const EmployerDashboard = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -35,7 +35,8 @@ const EmployerDashboard = () => {
           <Button>Post a Job</Button>
         </Link>
       </div>
-      <PostedJobsTable jobs={jobs} isLoading={isLoading} />
+      {/* <PostedJobsTable jobs={jobs} isLoading={isLoading} /> */}
+      <JobListingTableCard jobs={jobs} isLoading={isLoading} />
     </div>
   );
 };

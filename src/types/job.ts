@@ -1,19 +1,15 @@
 export interface Job {
   id: number;
   title: string;
-  company: string;
   company_name: string;
   location: string;
   salary: string;
-  type: string;
   slug: string;
   description: string;
   requirements: string;
-  benefits: string[];
   posted_date: string;
-  applicationDeadline: string;
   employment_type: string;
-  status: string;
+  status: "DRAFT" | "PENDING" | "ACTIVE";
   logo_url?: string;
 }
 
