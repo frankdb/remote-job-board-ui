@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,28 +10,16 @@ import {
 } from "lucide-react";
 import { formatPostedDate } from "@/utils/date";
 import { formatEmploymentType } from "@/utils/misc";
-
-interface Job {
-  id: number;
-  title: string;
-  company: string;
-  location: string;
-  salary: string;
-  description: string;
-  requirements: string;
-  benefits: string[];
-  posted_date: string;
-  applicationDeadline: string;
-  employment_type: string;
-  logo_url?: string;
-  company_name: string;
-}
-
+import { Job } from "@/types/job";
 interface JobDetailContentProps {
   job: Job;
+  preview?: boolean;
 }
 
-const JobDetailContent: React.FC<JobDetailContentProps> = ({ job }) => {
+const JobDetailContent: React.FC<JobDetailContentProps> = ({
+  job,
+  preview = false,
+}) => {
   return (
     <div className="max-w-4xl mx-auto">
       <Card className="mb-8">
@@ -80,7 +69,7 @@ const JobDetailContent: React.FC<JobDetailContentProps> = ({ job }) => {
                 </div>
               </div>
             </div>
-            <Button size="lg">Apply Now</Button>
+            {!preview && <Button size="lg">Apply Now</Button>}
           </div>
         </CardHeader>
         <CardContent>
@@ -93,14 +82,6 @@ const JobDetailContent: React.FC<JobDetailContentProps> = ({ job }) => {
               <h2 className="text-2xl font-semibold mb-2">Requirements</h2>
               <ul className="list-disc pl-5 space-y-1">{job.requirements}</ul>
             </section>
-            {/* <section>
-              <h2 className="text-2xl font-semibold mb-2">Benefits</h2>
-              <ul className="list-disc pl-5 space-y-1">
-                {job.benefits.map((benefit, index) => (
-                  <li key={index}>{benefit}</li>
-                ))}
-              </ul>
-            </section> */}
             <section className="flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <CalendarIcon size={16} />

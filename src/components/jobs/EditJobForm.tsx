@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -24,8 +23,9 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
+import { EmploymentType, Job } from "@/types/job";
 import api from "@/services/api";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 const formSchema = z.object({
   title: z.string().min(1, "Job title is required"),
@@ -35,50 +35,46 @@ const formSchema = z.object({
   requirements: z.string(),
 });
 
-export function PostJobForm() {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+interface EditJobFormProps {
+  job: Job;
+}
 
+export default function EditJobForm({ job }: EditJobFormProps) {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      salary: "",
-      employment_type: "FT",
-      description: "",
-      requirements: "",
+      title: job.title,
+      salary: job.salary,
+      employment_type: job.employment_type as EmploymentType,
+      description: job.description,
+      requirements: job.requirements,
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await api.post("/api/jobs/", values);
+      await api.put(`/api/jobs/${job.id}/`, values);
       toast({
         title: "Success",
-        description: "Job draft created successfully",
+        description: "Job post updated successfully",
       });
-      router.push(`/jobs/preview/${response.data.id}`);
+      router.push(`/jobs/preview/${job.id}`);
     } catch (error) {
-      console.error(error);
+      console.error("Error:", error);
       toast({
         title: "Error",
-        description: "Failed to create job draft. Please try again.",
+        description: "Failed to update job post. Please try again.",
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
-  }
+  };
 
   return (
-    <Card className="max-w-2xl mx-auto mt-4 mb-16">
-      <CardHeader>
-        <CardTitle>Post a New Job</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Card>
+      <CardContent className="pt-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="title"
@@ -86,10 +82,7 @@ export function PostJobForm() {
                 <FormItem>
                   <FormLabel>Job Title</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="e.g. Senior Frontend Developer"
-                      {...field}
-                    />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -101,12 +94,9 @@ export function PostJobForm() {
               name="salary"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Salary Range</FormLabel>
+                  <FormLabel>Salary</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="e.g. $60,000 - $80,000/year"
-                      {...field}
-                    />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -129,8 +119,8 @@ export function PostJobForm() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="FT">Full-time</SelectItem>
-                      <SelectItem value="PT">Part-time</SelectItem>
+                      <SelectItem value="FT">Full Time</SelectItem>
+                      <SelectItem value="PT">Part Time</SelectItem>
                       <SelectItem value="CT">Contract</SelectItem>
                       <SelectItem value="IN">Internship</SelectItem>
                     </SelectContent>
@@ -145,13 +135,9 @@ export function PostJobForm() {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Job Description</FormLabel>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea
-                      placeholder="Enter detailed job description..."
-                      className="h-32"
-                      {...field}
-                    />
+                    <Textarea {...field} rows={5} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -165,20 +151,23 @@ export function PostJobForm() {
                 <FormItem>
                   <FormLabel>Requirements</FormLabel>
                   <FormControl>
-                    <Textarea
-                      placeholder="Enter job requirements..."
-                      className="h-32"
-                      {...field}
-                    />
+                    <Textarea {...field} rows={5} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Posting..." : "Post Job"}
-            </Button>
+            <div className="flex justify-end gap-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.back()}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">Save Changes</Button>
+            </div>
           </form>
         </Form>
       </CardContent>

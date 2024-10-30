@@ -8,6 +8,7 @@ import api from "@/services/api";
 interface User {
   email: string;
   user_type: string;
+  id: string;
 }
 
 interface AuthContextType {
