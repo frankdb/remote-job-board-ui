@@ -1,3 +1,5 @@
+"use client";
+
 /* eslint-disable @next/next/no-img-element */
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,6 +13,12 @@ import {
 import { formatPostedDate } from "@/utils/date";
 import { formatEmploymentType } from "@/utils/misc";
 import { Job } from "@/types/job";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { ApplicationForm } from "./ApplicationForm";
+import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+
 interface JobDetailContentProps {
   job: Job;
   preview?: boolean;
@@ -20,6 +28,34 @@ const JobDetailContent: React.FC<JobDetailContentProps> = ({
   job,
   preview = false,
 }) => {
+  const { user } = useAuth();
+  const router = useRouter();
+  const [showApplicationForm, setShowApplicationForm] = useState(false);
+
+  const handleApply = () => {
+    if (!user) {
+      toast({
+        title: "Login Required",
+        description: "Please log in to apply for this job.",
+        variant: "destructive",
+      });
+      router.push("/login");
+      return;
+    }
+
+    if (job.application_url) {
+      window.open(job.application_url, "_blank");
+    } else {
+      setShowApplicationForm(true);
+    }
+  };
+
+  const handleApplicationSuccess = () => {
+    router.refresh();
+  };
+
+  const showApplyButton = !preview && (!user || user.user_type === "JS");
+
   return (
     <div className="max-w-4xl mx-auto">
       <Card className="mb-8">
@@ -69,7 +105,11 @@ const JobDetailContent: React.FC<JobDetailContentProps> = ({
                 </div>
               </div>
             </div>
-            {!preview && <Button size="lg">Apply Now</Button>}
+            {showApplyButton && (
+              <Button size="lg" onClick={handleApply}>
+                Apply Now
+              </Button>
+            )}
           </div>
         </CardHeader>
         <CardContent>
@@ -98,6 +138,13 @@ const JobDetailContent: React.FC<JobDetailContentProps> = ({
           </div>
         </CardContent>
       </Card>
+
+      <ApplicationForm
+        jobId={job.id}
+        isOpen={showApplicationForm}
+        onClose={() => setShowApplicationForm(false)}
+        onSuccess={handleApplicationSuccess}
+      />
     </div>
   );
 };

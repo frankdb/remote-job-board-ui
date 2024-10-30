@@ -33,6 +33,7 @@ const formSchema = z.object({
   employment_type: z.enum(["FT", "PT", "CT", "IN"]),
   description: z.string(),
   requirements: z.string(),
+  application_url: z.string().url().optional().or(z.literal("")),
 });
 
 export function PostJobForm() {
@@ -47,6 +48,7 @@ export function PostJobForm() {
       employment_type: "FT",
       description: "",
       requirements: "",
+      application_url: "",
     },
   });
 
@@ -172,6 +174,28 @@ export function PostJobForm() {
                     />
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="application_url"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>External Application URL (Optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="https://example.com/apply"
+                      type="url"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                  <p className="text-sm text-muted-foreground">
+                    If provided, applicants will be redirected to this URL
+                    instead of using our internal application system.
+                  </p>
                 </FormItem>
               )}
             />

@@ -11,6 +11,7 @@ export interface Job {
   employment_type: string;
   status: "DRAFT" | "PENDING" | "ACTIVE";
   logo_url?: string;
+  application_url?: string;
 }
 
 export interface JobsResponse {

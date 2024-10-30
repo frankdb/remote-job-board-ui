@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -9,29 +10,17 @@ import {
 } from "lucide-react";
 import { formatPostedDate } from "@/utils/date";
 import { formatEmploymentType } from "@/utils/misc";
-interface JobPost {
-  id: number;
-  title: string;
-  company_name: string;
-  location: string;
-  salary: string;
-  type: string;
-  slug: string;
-  description: string;
-  logoUrl?: string;
-  posted_date: string;
-  employment_type: string;
-}
+import { Job } from "@/types/job";
 
-const JobPostCard: React.FC<{ post: JobPost }> = ({ post }) => {
+const JobPostCard: React.FC<{ post: Job }> = ({ post }) => {
   return (
     <Link href={`/jobs/${post.slug}`}>
       <div className="bg-card hover:bg-accent text-card-foreground border rounded-lg p-6 shadow-md transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg cursor-pointer my-4">
         <div className="flex items-center">
           <div className="flex-shrink-0 mr-6">
-            {post.logoUrl ? (
+            {post.logo_url ? (
               <img
-                src={post.logoUrl}
+                src={post.logo_url}
                 alt={`${post.company_name} logo`}
                 className="w-16 h-16 rounded-full object-cover border-2 border-primary"
               />
