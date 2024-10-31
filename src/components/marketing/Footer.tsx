@@ -39,6 +39,11 @@ const Footer = () => {
                   Contact
                 </Link>
               </li>
+              <li>
+                <Link href="/privacy-policy" className="hover:text-secondary">
+                  Privacy Policy
+                </Link>
+              </li>
             </ul>
           </div>
           <div>
