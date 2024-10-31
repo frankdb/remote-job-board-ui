@@ -75,4 +75,17 @@ export const register = async (
 
 export const refreshToken = refreshTokenRequest;
 
+export const requestPasswordReset = async (email: string) => {
+  const response = await api.post("/api/password/reset/", { email });
+  return response.data;
+};
+
+export const resetPassword = async (token: string, newPassword: string) => {
+  const response = await api.post("/api/password/reset/confirm/", {
+    token,
+    new_password: newPassword,
+  });
+  return response.data;
+};
+
 export default api;
