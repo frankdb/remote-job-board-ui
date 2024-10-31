@@ -88,4 +88,9 @@ export const resetPassword = async (token: string, newPassword: string) => {
   return response.data;
 };
 
+export const handleGoogleCallback = async (code: string) => {
+  const response = await api.post("/api/auth/google/callback/", { code });
+  return response.data;
+};
+
 export default api;

@@ -22,6 +22,7 @@ import AuthHeader from "@/components/auth/AuthHeader";
 import { useAuth } from "@/contexts/AuthContext";
 import { login } from "@/services/api";
 import { toast } from "@/hooks/use-toast";
+import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -142,7 +143,21 @@ export function LoginForm() {
             </Button>
           </form>
         </Form>
-        <p className="text-center text-sm text-muted-foreground mt-6">
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-card px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
+        </div>
+
+        <GoogleSignInButton />
+
+        <p className="text-center text-sm text-muted-foreground">
           Don&apos;t have an account?{" "}
           <Link href="/register" className="text-primary hover:underline">
             Register
