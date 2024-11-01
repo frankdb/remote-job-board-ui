@@ -18,7 +18,11 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import AuthHeader from "@/components/auth/AuthHeader";
 import { toast } from "@/hooks/use-toast";
-import api from "@/services/api";
+import axios from "axios";
+
+const axiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+});
 
 const formSchema = z.object({
   email: z.string().email({
@@ -40,7 +44,7 @@ export function ForgotPasswordForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     try {
-      await api.post("/api/password/reset/", {
+      await axiosInstance.post("/api/password/reset/", {
         email: values.email,
       });
       setIsSubmitted(true);
