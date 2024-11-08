@@ -13,6 +13,7 @@ interface AuthContextType {
   logout: () => void;
   refreshAccessToken: () => Promise<string | null>;
   isLoading: boolean;
+  handleGoogleSuccess: (tokenResponse: any) => Promise<any>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -89,6 +90,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const handleGoogleSuccess = async (tokenResponse: any) => {
+    try {
+      // Send the access token to your backend
+      const response = await api.post("/api/auth/google/", {
+        access_token: tokenResponse.access_token,
+      });
+
+      // Store tokens
+      setAccessToken(response.data.tokens.access);
+      setRefreshTokenValue(response.data.tokens.refresh);
+      localStorage.setItem("access_token", response.data.tokens.access);
+      localStorage.setItem("refresh_token", response.data.tokens.refresh);
+
+      // Set user and authentication state
+      setUser(response.data.user);
+      setIsAuthenticated(true);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+
+      return response.data;
+    } catch (error) {
+      console.error("Google login error:", error);
+      throw error;
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -98,6 +124,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         logout,
         refreshAccessToken,
         isLoading,
+        handleGoogleSuccess,
       }}
     >
       {children}

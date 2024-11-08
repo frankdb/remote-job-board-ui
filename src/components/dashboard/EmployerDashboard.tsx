@@ -13,7 +13,7 @@ const EmployerDashboard = () => {
     const fetchJobs = async () => {
       try {
         const response = await api.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/jobs/employer/`
+          `${process.env.NEXT_PUBLIC_API_URL}api/jobs/employer/`
         );
         const jobsWithStatus = response.data.results;
         setJobs(jobsWithStatus);

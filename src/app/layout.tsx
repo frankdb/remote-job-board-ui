@@ -3,6 +3,7 @@ import { Figtree } from "next/font/google";
 import "./globals.css";
 import { AuthProviderWrapper } from "@/components/auth/AuthProviderWrapper";
 import { Toaster } from "@/components/ui/toaster";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const font = Figtree({ subsets: ["latin"] });
 
@@ -19,10 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
-        <AuthProviderWrapper>
-          {children}
-          <Toaster />
-        </AuthProviderWrapper>
+        <GoogleOAuthProvider
+          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
+        >
+          <AuthProviderWrapper>
+            {children}
+            <Toaster />
+          </AuthProviderWrapper>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );

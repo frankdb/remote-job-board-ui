@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useGoogleLogin } from "@react-oauth/google";
+import { useRouter } from "next/navigation";
 
 interface GoogleSignInButtonProps {
   isRegister?: boolean;
@@ -13,23 +16,40 @@ export function GoogleSignInButton({
   isRegister = false,
 }: GoogleSignInButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const { handleGoogleSuccess } = useAuth();
+  const router = useRouter();
 
-  const handleGoogleSignIn = async () => {
-    setIsLoading(true);
-    try {
-      // Replace this URL with your actual Google OAuth endpoint
-      window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google/`;
-    } catch (error) {
-      console.error("Google sign-in error:", error);
+  const login = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      setIsLoading(true);
+      try {
+        await handleGoogleSuccess(tokenResponse);
+        toast({
+          title: "Success",
+          description: isRegister
+            ? "Account created successfully"
+            : "Signed in successfully",
+        });
+        router.push("/dashboard");
+      } catch (error) {
+        console.error("Google sign-in error:", error);
+        toast({
+          title: "Error",
+          description: "Failed to sign in with Google.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    onError: () => {
       toast({
         title: "Error",
         description: "Failed to initialize Google sign-in.",
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+  });
 
   return (
     <Button
@@ -37,7 +57,7 @@ export function GoogleSignInButton({
       type="button"
       disabled={isLoading}
       className="w-full"
-      onClick={handleGoogleSignIn}
+      onClick={() => login()}
     >
       <FcGoogle className="mr-2 h-4 w-4" />
       {isLoading
