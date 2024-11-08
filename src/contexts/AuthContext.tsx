@@ -14,6 +14,7 @@ interface AuthContextType {
   refreshAccessToken: () => Promise<string | null>;
   isLoading: boolean;
   handleGoogleSuccess: (tokenResponse: any) => Promise<any>;
+  updateUser: (updatedUser: User) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -108,11 +109,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setIsAuthenticated(true);
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
-      return response.data;
+      return response.data.user;
     } catch (error) {
       console.error("Google login error:", error);
       throw error;
     }
+  };
+
+  const updateUser = (updatedUser: User) => {
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
   };
 
   return (
@@ -125,6 +131,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         refreshAccessToken,
         isLoading,
         handleGoogleSuccess,
+        updateUser,
       }}
     >
       {children}

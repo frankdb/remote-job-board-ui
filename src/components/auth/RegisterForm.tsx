@@ -18,7 +18,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
 import AuthHeader from "@/components/auth/AuthHeader";
 import { register } from "@/services/api";
 import { toast } from "@/hooks/use-toast";
@@ -34,7 +33,6 @@ const formSchema = z.object({
 });
 
 export function RegisterForm() {
-  const [isEmployer, setIsEmployer] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
@@ -49,7 +47,7 @@ export function RegisterForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     try {
-      await register(values.email, values.password, isEmployer ? "EM" : "JS");
+      await register(values.email, values.password);
       toast({
         title: "Registration successful",
         description:
@@ -57,11 +55,8 @@ export function RegisterForm() {
       });
       setRegistrationSuccess(true);
     } catch (error: any) {
-      //   console.error(error);
       let errorMessage = "An unexpected error occurred during registration.";
       if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
         if (error.response.status === 400) {
           errorMessage = "Invalid input. Please check your email and password.";
         } else if (error.response.status === 409) {
@@ -70,7 +65,6 @@ export function RegisterForm() {
           errorMessage = "Server error. Please try again later.";
         }
       } else if (error.request) {
-        // The request was made but no response was received
         errorMessage =
           "No response from server. Please check your internet connection.";
       }
@@ -173,29 +167,8 @@ export function RegisterForm() {
                     </FormItem>
                   )}
                 />
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <label
-                      htmlFor="user-type"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      {isEmployer ? "Employer" : "Job Seeker"}
-                    </label>
-                    <Switch
-                      id="user-type"
-                      checked={isEmployer}
-                      onCheckedChange={setIsEmployer}
-                    />
-                  </div>
-                  <p className="text-xs text-muted-foreground text-left">
-                    Switch between Job Seeker and Employer to choose your
-                    account type
-                  </p>
-                </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading
-                    ? "Registering..."
-                    : `Register as ${isEmployer ? "Employer" : "Job Seeker"}`}
+                  {isLoading ? "Registering..." : "Create Account"}
                 </Button>
               </form>
             </Form>

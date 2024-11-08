@@ -7,45 +7,32 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
-  //   FormControl,
-  //   FormField,
-  //   FormItem,
-  //   FormLabel,
-  //   FormMessage,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
-// import { Input } from "@/components/ui/input";
-// import { Textarea } from "@/components/ui/textarea";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { JobSeekerProfile } from "@/types/user";
 
 const formSchema = z.object({
-  full_name: z.string().min(1, "Full name is required"),
-  headline: z.string().min(1, "Professional headline is required"),
-  bio: z.string().optional(),
-  skills: z.string().transform((str) => str.split(",")),
-  experience_years: z.string().transform(Number),
-  preferred_work_type: z.enum(["remote", "office", "hybrid"]),
+  first_name: z.string().min(1, "First name is required"),
+  last_name: z.string().min(1, "Last name is required"),
+  skills: z.string().min(1, "Skills are required"),
 });
 
 export default function JobSeekerForm({
   onSubmit,
 }: {
-  onSubmit: (data: any) => void;
+  onSubmit: (data: JobSeekerProfile) => void;
 }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      full_name: "",
-      headline: "",
-      bio: "",
-      //   skills: "",
-      //   experience_years: "",
-      preferred_work_type: "remote",
+      first_name: "",
+      last_name: "",
+      skills: "",
     },
   });
 
@@ -56,7 +43,50 @@ export default function JobSeekerForm({
           Complete Your Profile
         </h2>
 
-        {/* Form fields here - similar to the registration form structure */}
+        <FormField
+          control={form.control}
+          name="first_name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>First Name</FormLabel>
+              <FormControl>
+                <Input placeholder="John" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="last_name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Last Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Doe" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="skills"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Skills</FormLabel>
+              <FormControl>
+                <Input placeholder="React, TypeScript, Node.js" {...field} />
+              </FormControl>
+              <FormMessage />
+              <p className="text-sm text-muted-foreground">
+                Separate skills with commas
+              </p>
+            </FormItem>
+          )}
+        />
 
         <Button type="submit" className="w-full">
           Complete Profile

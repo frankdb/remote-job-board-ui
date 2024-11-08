@@ -26,14 +26,3 @@ export interface FilterParams {
 }
 
 export type EmploymentType = "FT" | "PT" | "CT" | "IN";
-
-export interface JobFormData {
-  title: string;
-  company_name: string;
-  location: string;
-  salary: string;
-  employment_type: EmploymentType;
-  description: string;
-  requirements: string;
-  benefits?: string[];
-}

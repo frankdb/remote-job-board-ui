@@ -7,38 +7,35 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
-  //   FormControl,
-  //   FormField,
-  //   FormItem,
-  //   FormLabel,
-  //   FormMessage,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
-// import { Input } from "@/components/ui/input";
-// import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { EmployerProfile } from "@/types/user";
 
 const formSchema = z.object({
   company_name: z.string().min(1, "Company name is required"),
-  company_size: z.string().min(1, "Company size is required"),
-  industry: z.string().min(1, "Industry is required"),
-  company_description: z.string().min(1, "Company description is required"),
-  company_website: z.string().url().optional(),
-  company_location: z.string().min(1, "Company location is required"),
+  description: z.string().min(1, "Company description is required"),
+  website: z.string().url().optional(),
+  location: z.string().min(1, "Company location is required"),
 });
 
 export default function EmployerForm({
   onSubmit,
 }: {
-  onSubmit: (data: any) => void;
+  onSubmit: (data: EmployerProfile) => void;
 }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       company_name: "",
-      company_size: "",
-      industry: "",
-      company_description: "",
-      company_website: "",
-      company_location: "",
+      description: "",
+      website: "",
+      location: "",
     },
   });
 
@@ -47,7 +44,69 @@ export default function EmployerForm({
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <h2 className="text-2xl font-bold text-center">Company Information</h2>
 
-        {/* Form fields here - similar to the registration form structure */}
+        <FormField
+          control={form.control}
+          name="company_name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Company Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Acme Inc." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Company Description</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Tell us about your company..."
+                  className="resize-none"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="website"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Website (Optional)</FormLabel>
+              <FormControl>
+                <Input
+                  type="url"
+                  placeholder="https://example.com"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="location"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Location</FormLabel>
+              <FormControl>
+                <Input placeholder="City, Country" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <Button type="submit" className="w-full">
           Complete Profile

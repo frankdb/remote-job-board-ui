@@ -4,25 +4,32 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { UserType, OnboardingState } from "@/types/user";
 import JobSeekerForm from "@/components/onboarding/JobSeekerForm";
 import EmployerForm from "@/components/onboarding/EmployerForm";
 import { toast } from "@/hooks/use-toast";
-import api from "@/services/api";
+import api, {
+  setUserType,
+  updateJobSeekerProfile,
+  updateEmployerProfile,
+} from "@/services/api";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function OnboardingFlow() {
   const router = useRouter();
-  //   const { user, updateUser } = useAuth();
+  const { user, updateUser } = useAuth();
   const [state, setState] = useState<OnboardingState>({
     step: 1,
   });
 
   const handleUserTypeSelect = async (type: UserType) => {
     try {
-      //   await api.post("/api/users/type", { user_type: type });
+      const response = await setUserType(type);
+      if (user) {
+        updateUser({ ...user, user_type: type });
+      }
       setState((prev) => ({ ...prev, step: 2, userType: type }));
     } catch (error) {
       toast({
@@ -35,11 +42,11 @@ export function OnboardingFlow() {
 
   const handleProfileSubmit = async (profileData: any) => {
     try {
-      const endpoint =
-        state.userType === "JS"
-          ? "/api/jobseeker/profile"
-          : "/api/employer/profile";
-      await api.post(endpoint, profileData);
+      if (state.userType === "JS") {
+        await updateJobSeekerProfile(profileData);
+      } else {
+        await updateEmployerProfile(profileData);
+      }
 
       toast({
         title: "Success",
@@ -47,7 +54,7 @@ export function OnboardingFlow() {
       });
 
       router.push("/dashboard");
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Error",
         description: "Failed to create profile. Please try again.",

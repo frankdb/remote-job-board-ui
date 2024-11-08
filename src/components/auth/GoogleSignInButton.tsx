@@ -23,14 +23,20 @@ export function GoogleSignInButton({
     onSuccess: async (tokenResponse) => {
       setIsLoading(true);
       try {
-        await handleGoogleSuccess(tokenResponse);
+        const user = await handleGoogleSuccess(tokenResponse);
         toast({
           title: "Success",
           description: isRegister
             ? "Account created successfully"
             : "Signed in successfully",
         });
-        router.push("/dashboard");
+
+        // Redirect to onboarding if user type is not set
+        if (!user.user_type) {
+          router.push("/onboarding");
+        } else {
+          router.push("/dashboard");
+        }
       } catch (error) {
         console.error("Google sign-in error:", error);
         toast({

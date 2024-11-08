@@ -1,27 +1,22 @@
 export interface User {
   email: string;
-  user_type: UserType;
+  user_type?: UserType | null;
   id: string;
 }
 
 export type UserType = "EM" | "JS";
 
 export interface JobSeekerProfile {
-  full_name: string;
-  headline: string;
-  bio?: string;
-  skills: string[];
-  experience_years: number;
-  preferred_work_type: "remote" | "office" | "hybrid";
+  first_name?: string;
+  last_name?: string;
+  skills?: string;
 }
 
 export interface EmployerProfile {
-  company_name: string;
-  company_size: string;
-  industry: string;
-  company_description: string;
-  company_website?: string;
-  company_location: string;
+  company_name?: string;
+  description?: string;
+  website?: string;
+  location?: string;
 }
 
 export interface OnboardingState {

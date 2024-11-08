@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosError } from "axios";
+import { EmployerProfile, JobSeekerProfile, UserType } from "@/types/user";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -60,15 +61,10 @@ export const login = async (email: string, password: string) => {
   return response.data;
 };
 
-export const register = async (
-  email: string,
-  password: string,
-  userType: "JS" | "EM" | "AD"
-) => {
+export const register = async (email: string, password: string) => {
   const response = await api.post("/api/register/", {
     email,
     password,
-    user_type: userType,
   });
   return response.data;
 };
@@ -90,6 +86,33 @@ export const resetPassword = async (token: string, newPassword: string) => {
 
 export const handleGoogleCallback = async (code: string) => {
   const response = await api.post("/api/auth/google/callback/", { code });
+  return response.data;
+};
+
+export const setUserType = async (userType: UserType) => {
+  const response = await api.post("/api/user/type/", {
+    user_type: userType,
+  });
+  return response.data;
+};
+
+export const updateJobSeekerProfile = async (
+  jobseekerProfileData: JobSeekerProfile
+) => {
+  const response = await api.patch(
+    "/api/job-seeker/profile/",
+    jobseekerProfileData
+  );
+  return response.data;
+};
+
+export const updateEmployerProfile = async (
+  employerProfileData: EmployerProfile
+) => {
+  const response = await api.patch(
+    "/api/employer/profile/",
+    employerProfileData
+  );
   return response.data;
 };
 

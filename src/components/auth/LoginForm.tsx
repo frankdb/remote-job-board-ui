@@ -58,7 +58,12 @@ export function LoginForm() {
         title: "Login successful",
         description: "You have been logged in successfully.",
       });
-      router.push("/dashboard");
+
+      if (!user.user_type) {
+        router.push("/onboarding");
+      } else {
+        router.push("/dashboard");
+      }
     } catch (error: any) {
       console.error(error);
       let errorMessage = "An unexpected error occurred during login.";
