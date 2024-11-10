@@ -3,42 +3,32 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import RecentApplicationsTable from "./RecentApplicationsTable";
-
-interface Application {
-  id: number;
-  jobTitle: string;
-  company: string;
-  dateApplied: string;
-  status: string;
-}
+import ApplicationListingTableCard from "./ApplicationListingTableCard";
+import { ApplicationsResponse } from "@/types/application";
+import api from "@/services/api";
 
 const JobSeekerDashboard = () => {
-  const [applications, setApplications] = useState<Application[]>([]);
+  const [applications, setApplications] = useState<ApplicationsResponse>({
+    count: 0,
+    next: null,
+    previous: null,
+    results: [],
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch recent applications data
-    // For now, we'll use mock data
-    const mockApplications = [
-      {
-        id: 1,
-        jobTitle: "Frontend Developer",
-        company: "TechCorp",
-        dateApplied: "2024-03-15",
-        status: "Pending",
-      },
-      {
-        id: 2,
-        jobTitle: "UX Designer",
-        company: "DesignHub",
-        dateApplied: "2024-03-10",
-        status: "Reviewed",
-      },
-    ];
+    const fetchApplications = async () => {
+      try {
+        const response = await api.get("/api/job-seeker/applications/");
+        setApplications(response.data);
+      } catch (error) {
+        console.error("Error fetching applications:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    setApplications(mockApplications);
-    setIsLoading(false);
+    fetchApplications();
   }, []);
 
   return (
@@ -49,8 +39,8 @@ const JobSeekerDashboard = () => {
           <Button>Browse Jobs</Button>
         </Link>
       </div>
-      <RecentApplicationsTable
-        applications={applications}
+      <ApplicationListingTableCard
+        applications={applications.results}
         isLoading={isLoading}
       />
     </div>

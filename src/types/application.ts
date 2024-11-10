@@ -1,11 +1,14 @@
-export interface JobApplication {
-  id?: number;
-  job_id: number;
-  cover_letter?: string;
-  status?: string;
-  created_at?: string;
+export interface Application {
+  id: string;
+  applied_date: string;
+  job_title: string;
+  company_name: string;
+  status: string;
 }
 
-export interface ApplicationFormData {
-  cover_letter: string;
+export interface ApplicationsResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Application[];
 }
