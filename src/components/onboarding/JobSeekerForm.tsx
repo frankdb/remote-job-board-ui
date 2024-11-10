@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { JobSeekerProfile } from "@/types/user";
+import { JobSeekerProfile } from "@/types/types";
 
 const formSchema = z.object({
   first_name: z.string().min(1, "First name is required"),

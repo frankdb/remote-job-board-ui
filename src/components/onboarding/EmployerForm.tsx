@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { EmployerProfile } from "@/types/user";
+import { EmployerProfile } from "@/types/types";
 
 const formSchema = z.object({
   company_name: z.string().min(1, "Company name is required"),

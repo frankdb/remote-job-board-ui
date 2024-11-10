@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ApplicationListingTableCard from "./ApplicationListingTableCard";
-import { ApplicationsResponse } from "@/types/application";
+import { ApplicationsResponse } from "@/types/types";
 import api from "@/services/api";
 
 const JobSeekerDashboard = () => {

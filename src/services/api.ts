@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosError } from "axios";
-import { EmployerProfile, JobSeekerProfile, UserType } from "@/types/user";
+import { EmployerProfile, JobSeekerProfile, UserType } from "@/types/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 

@@ -4,7 +4,7 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { refreshToken } from "@/services/api";
 import api from "@/services/api";
-import { User } from "@/types/user";
+import { User } from "@/types/types";
 
 interface AuthContextType {
   isAuthenticated: boolean;

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { UserType, OnboardingState } from "@/types/user";
+import { UserType, OnboardingState } from "@/types/types";
 import JobSeekerForm from "@/components/onboarding/JobSeekerForm";
 import EmployerForm from "@/components/onboarding/EmployerForm";
 import { toast } from "@/hooks/use-toast";
