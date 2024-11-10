@@ -34,13 +34,16 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center space-x-4">
-            {/* Hide these links on mobile, show on md (768px) and up */}
+            {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-4">
               <Link href="/jobs" className="text-sm font-medium">
                 Jobs
               </Link>
               {isAuthenticated ? (
                 <>
+                  <Link href="/profile" className="text-sm font-medium">
+                    Profile
+                  </Link>
                   <Link href="/dashboard" className="text-sm font-medium">
                     Dashboard
                   </Link>
@@ -60,6 +63,7 @@ const Navbar = () => {
               )}
             </div>
 
+            {/* Mobile Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="rounded-full">
@@ -75,7 +79,6 @@ const Navbar = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem></DropdownMenuItem>
                 <DropdownMenuItem>
                   <Link href="/jobs" className="w-full">
                     Jobs
@@ -83,6 +86,11 @@ const Navbar = () => {
                 </DropdownMenuItem>
                 {isAuthenticated ? (
                   <>
+                    <DropdownMenuItem>
+                      <Link href="/profile" className="w-full">
+                        Profile
+                      </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuItem>
                       <Link href="/dashboard" className="w-full">
                         Dashboard
